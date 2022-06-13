@@ -1,0 +1,75 @@
+{% load crispy_forms_tags %}
+{% load static  %}
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" type="text/css" href="{% static 'app/css/loginform.css' %}" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title>Register - SB Admin</title>
+
+  <link rel="stylesheet" type="text/css" href="{% static 'app/css/styles2.css' %}" />
+  <script src="{% static 'app/js/all.js' %}"></script>
+
+</head>
+<body class="bg-primary">
+
+ 
+  <div id="layoutAuthentication">
+    <div id="layoutAuthentication_content" style="background-color: #ecf0f3;">
+      <main>
+        <div class="container">
+          <div class="row justify-content-center"  >
+            <div class="col-lg-7">
+              <div class="card  border-0 p-2 mt-1">
+
+                <div>
+                  <img src="{% static 'app/assets/img/logo_450_120.png'  %}" alt="logo" >
+
+                </div>
+                <div class="card-body">
+
+
+                  <div>
+
+
+                    <div class="p-3 mt-3">
+                      <div class="wrapper">
+
+
+
+                        <form class="p-3 mt-3" method="POST">
+                          {% csrf_token%}
+                          {{ form|crispy }}
+                          <div class="form-field d-flex align-items-center"> <span class="far fa-user"></span> <input type="text" name="username" id="userName" placeholder="Username"> </div>
+                          <div class="form-field d-flex align-items-center"> <span class="fas fa-key"></span> <input type="password" name="password" id="pwd" placeholder="Password"> </div>
+                          <button class="btn mt-3">Login</button>
+                        </form>
+                        <div class="text-center fs-6">   <a href="{% url 'register' %}">Sign up</a> </div>
+                      </div>
+
+                    </div>
+
+
+
+                  </div>
+                  <div class="text-center">Copyright &copy; StudyGo 2022</div>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+      
+  </div>
+  <script src="{% static 'app/js/bootstrap.bundle.min.js.js' %}" crossorigin="anonymous"></script>
+  <script src="{% static 'app/js/scripts.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+   {% load static %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_field %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title>Register - SB Admin</title>
+
+  <link rel="stylesheet" type="text/css" href="{% static 'app/css/styles2.css' %}" />
+  <script src="{% static 'app/js/all.js' %}"></script>
+
+</head>
+<body class="bg-primary">
+  <div id="layoutAuthentication">
+    <div id="layoutAuthentication_content">
+      <main>
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-7">
+              <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-header"><h3 class="text-center font-weight-light my-4">Create Account</h3></div>
+                <div class="card-body">
+                  <section id="OfficeInfo">
+
+
+                    <form method="POST">
+                      {% csrf_token%}
+                      {{ form|crispy }}
+
+
+                      <div class="row mb-3">
+                        <div class="col-md-6">
+                          <div class="form-floating mb-3 mb-md-0">
+                            <div class="form-floating mb-3 mb-md-0" id="firstname">
+                              {{ officeInfoForm.firstname|as_crispy_field }}
+                            </div>
+                          </div>
+                        </div>
+
+
+
+                        <div class="col-md-6">
+                          <div class="form-floating mb-3 mb-md-0">
+                            <div class="form-floating mb-3 mb-md-0" id="lastname">
+                              {{ officeInfoForm.lastname|as_crispy_field }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row mb-3">
+                        <div class="col-md-6">
+                          <div class="form-floating mb-3 mb-md-0">
+                            <div class="form-floating mb-3 mb-md-0" id="username">
+                              {{ officeInfoForm.username|as_crispy_field }}
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-floating mb-3 mb-md-0">
+                            <div class="form-floating mb-3 mb-md-0" id="email">
+                              {{ officeInfoForm.email|as_crispy_field }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-floating mb-3">
+                        <div class="form-floating mb-3 mb-md-0" id="address">
+                          {{ alluserInfoForm.address|as_crispy_field }}
+                        </div>
+                      </div>
+
+                      <div class="row mb-3">
+                        <div class="col-md-6">
+                          <div class="form-floating mb-3 mb-md-0">
+                            <div class="form-floating mb-3 mb-md-0" id="password">
+                              {{ officeInfoForm.password|as_crispy_field }}
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-floating mb-3 mb-md-0">
+                            <div class="form-floating mb-3 mb-md-0" id="confirmpassword">
+                              {{ officeInfoForm.confirmpassword|as_crispy_field }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row mb-3">
+                        <div class="col-md-6">
+                          <div class="form-floating mb-3 mb-md-0" id="phone">
+                            {{ alluserInfoForm.phone|as_crispy_field }}
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-floating mb-3 mb-md-0" id="residence">
+                            {{ alluserInfoForm.residence|as_crispy_field }}
+                          </div>
+                        </div>
+                      </div>
+
+
+                      <div class="mt-4 mb-0">
+
+                        <div class="d-grid">
+                          <input class="btn btn-primary btn-block" type="submit" value="register" placeholder="Create Account ">
+                        </div>
+                      </div>
+
+
+                      {% if officeInfoForm.errors %}
+                      <p class="validation-summary-errors">Please enter a correct user name and password.</p>
+                      {% endif %}
+                    </form>
+                  </section>
+                </div>
+                <div class="card-footer text-center py-3">
+                  <div class="small"><a href="{% url 'loginMain' %}">Have an account? Go to login</a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div id="layoutAuthentication_footer">
+      <footer class="py-4 bg-light mt-auto">
+        <div class="container-fluid px-4">
+          <div class="d-flex align-items-center justify-content-between small">
+            <div class="text-muted">Copyright &copy; StudyGo 2022</div>
+
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <script src="{% static 'app/js/bootstrap.bundle.min.js.js' %}" crossorigin="anonymous"></script>
+  <script src="{% static 'app/js/scripts.js' %}"></script>
+</body>
+</html>

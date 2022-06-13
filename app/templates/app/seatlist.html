@@ -1,0 +1,94 @@
+{% extends "app/layout.html" %}
+
+
+{% block content %}
+<main>
+  <div class="container-fluid px-4">
+    <h1 class="mt-4">Office Name :{{username}}</h1>
+    <ol class="breadcrumb mb-4">
+      <li class="breadcrumb-item active">Dashboard</li>
+    </ol>
+
+
+    <div class="row">
+      <form action="{% url  seatslist username %}" enctype="multipart/form-data" method="POST">
+        {% csrf_token %}
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <select class="form-control" name="degrees" readonly id="degrees">
+              {% for degreelist     in degreelists    %}
+              {% if   degreelist.degree|stringformat:"s" in  degrees|stringformat:"s" %}
+              <option selected value="{{degreelist.id}}">{{degreelist.degree}}</option>
+              {% else    %}
+              <option value="{{degreelist.id}}">{{degreelist.degree}}</option>
+              {% endif    %}
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-6">
+            <input class="form-control card bg-primary" type="submit" value="Submit">
+          </div>
+        </div>
+      </form>
+    </div>
+
+
+    <div class="card mb-4">
+      <div class="card-header">
+        <i class="fas fa-table me-1"></i>
+        {{tableTitle}}
+      </div>
+      <div class="card-body">
+        <table id="datatablesSimple">
+          <thead>
+            <tr>
+              <th width="6">No.</th>
+              <th>University Name</th>
+              <th>University Degree</th>
+              <th>Language</th>
+              <th>Department</th>
+              <th>University City</th>
+              <th>thesis</th>
+              <th>Number Of Years</th>
+              <th>Notes</th>
+              <th>System Of Payment</th>
+              <th>Taksit Fees</th>
+              <th>Active Seat</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>Name</th>
+              <th>Position</th>
+              <th>Office</th>
+              <th>Age</th>
+              <th>Start date</th>
+              <th>Salary</th>
+            </tr>
+          </tfoot>
+          <tbody>
+            {% for seats in seatlist  %}
+            <tr>
+              <td>{{seats.id}}</td>
+              <td>{{seats.universityName}}</td>
+              <td>{{seats.universityDegree}}</td>
+              <td>{{seats.language}}</td>
+              <td>{{seats.department}}</td>
+              <td>{{seats.universityCity}}</td>
+              <td>{{seats.thesis}}</td>
+              <td>{{seats.numberOfYears}}</td>
+              <td>{{seats.notes}}</td>
+              <td>{{seats.systemOfPayment}}</td>
+              <td>{{seats.taksitFees}}</td>
+              <td><a href="#"> {{seats.activeSeat}} </a> </td>
+            </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+
+{% endblock %}

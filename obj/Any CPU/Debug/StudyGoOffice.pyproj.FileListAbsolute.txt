@@ -1,0 +1,4 @@
+D:\E\E\StudygoA2\StudyGoOffice161\StudyGoOffice\obj\Any CPU\Debug\StudyGoOffice.pyproj.SuggestedBindingRedirects.cache
+D:\E\E\StudygoA2\StudyGoOffice161\StudyGoOffice\obj\Any CPU\Debug\StudyGoOffice.pyproj.CoreCompileInputs.cache
+D:\E\E\StudygoA2a\StudyGoOffice171\StudyGoOffice\obj\Any CPU\Debug\StudyGoOffice.pyproj.SuggestedBindingRedirects.cache
+D:\E\E\StudygoA2a\StudyGoOffice171\StudyGoOffice\obj\Any CPU\Debug\StudyGoOffice.pyproj.CoreCompileInputs.cache

@@ -1,0 +1,146 @@
+{% extends "app/layout.html" %}
+
+
+{% block content %}
+<main>
+  <div class="container-fluid px-4">
+    <h3 class="mt-4">Office Name :{{username}}  ({{statusTypesNumAll}}) </h3>
+          
+
+      <div class="row mb-4">
+        <Table class="form-control" style="border:1px solid  #ffffff;">
+          <Th>  </Th>
+          <TR>
+            {% for studentStatu in studentStatus %}
+            <td class="col-l-12" style="width:20%; ">
+              <div>
+                {% if forloop.counter|divisibleby:1 %}
+                <div class="card bg-studygo text-white">
+                  {% endif %}
+
+                  {% if forloop.counter|divisibleby:2 %}
+                  <div class="card bg-primary  text-white">
+                    {% endif %}
+                    {% if forloop.counter|divisibleby:3 %}
+                    <div class="card bg-warning text-white">
+                      {% endif %}
+                      {% if forloop.counter|divisibleby:4 %}
+                      <div class="card bg-success  text-white">
+                        {% endif %}
+                        {% if forloop.counter|divisibleby:5 %}
+                        <div class="card bg-danger  text-white">
+                          {% endif %}
+
+
+                          <div class="card-body" style="height: 30px;   margin-bottom: +10px; ">
+                            <span style="font-size: 13px;">
+                              {{studentStatu.name}}: {{studentStatu.statusDescription}}
+                            </span>
+                          </div>
+                          <div class="card-footer" style="height: 120px; ">
+                            {% for statusType in statusTypes %}
+                            {% if     studentStatu.name|stringformat:"s" in statusType.studentStatus|stringformat:"s"   %}
+                            <li>
+                              <span style="font-size:12px;">
+                                {{statusType.name}}
+                              </span>
+                              <span style="color:black;">
+                                {% for statusTypesSum in statusTypesNum %}
+                                {% if     statusType.name|stringformat:"s" == statusTypesSum.statustypename|stringformat:"s"   %}
+                                ({{statusTypesSum.statustypeNum}})
+                                {% endif %}
+                                {% endfor %}
+                              </span>
+
+                            </li>
+                            {% endif %}
+                            {% endfor %}
+                          </div>
+
+                        </div>
+                      </div>
+            </td>
+
+            {% endfor %}
+
+          </TR>
+        </Table>
+
+      </div>
+          
+    <div class="card mb-4">
+        <div class="card-header">
+          <i class="fas fa-table me-1"></i>
+          {{tableTitle}}
+        </div>
+        <div class="card-body">
+          <table id="datatablesSimple">
+            <thead>
+              <tr>
+                <th width="6">No.</th>
+                <th>ReferenceNo</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Gender</th>
+                <th>Nationality</th>
+                <th>Email</th>
+                <th>Passport Number</th>
+                <th>Documents</th>
+                <th>Degree</th>
+                <th width="16">Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Office</th>
+                <th>Age</th>
+                <th>Start date</th>
+                <th>Salary</th>
+              </tr>
+            </tfoot>
+            <tbody>
+              {% for stuino in studentInfos  %}
+              <tr>
+                <td><span hidden> {{stuino.id}}</span> {{forloop.counter }}</td>
+                <td>{{stuino.referenceNo}}</td>
+                <td>{{stuino.name}}</td>
+                <td>{{stuino.surname}}</td>
+                <td>{{stuino.gender}}</td>
+                <td> {{stuino.nationality}}</td>
+                <td> {{stuino.email}}</td>
+                <td> {{stuino.passportNo}}</td>
+                <td> {{stuino.documents}}</td>
+                <td> {{stuino.degree}}</td>
+
+                {% if stuino.statusType|stringformat:"s" in  'Reject'|stringformat:"s"   %}
+                <td class="card bg-danger"> {{stuino.statusType}},{{stuino.reject}}  </td>
+                {% else  %}
+                {% if stuino.statusType|stringformat:"s" in 'Payment Receipt Uploaded'|stringformat:"s"   %}
+                <td class="card bg-success   text-white">{{stuino.statusType}} </td>
+                {% else  %}
+                {% if stuino.statusType|stringformat:"s" in 'Acceptance Letter Sent'|stringformat:"s"   %}
+                <td class="card bg-warning text-white">{{stuino.statusType}} </td>
+                {% else  %}
+                {% if stuino.statusType|stringformat:"s" in 'University Enrollment Completed'|stringformat:"s"   %}
+                <td class="card bg-danger text-white ">{{stuino.statusType}} </td>
+                {% else  %}
+                <td> {{stuino.statusType}} </td>
+                {% endif %}
+                {% endif %}
+                {% endif %}
+                {% endif %}
+                <td> <a href="{% url   studendata  stuino.id %}"> View </a></td>
+              </tr>
+              {% endfor %}
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+  </div>
+</main>
+
+{% endblock %}

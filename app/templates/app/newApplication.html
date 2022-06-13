@@ -1,0 +1,630 @@
+{% extends "app/layout.html" %}
+
+
+
+{% block content %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_field %}
+
+<style>
+
+
+  .input5[type="file"] {
+    font-size: 17px;
+    color: #b8b8b8;
+  }
+
+  .label5 {
+    width: 100%;
+    display: block;
+    padding: 0.375rem 0.75rem;
+    border-radius: 5px;
+    background: #0d6efd;
+    color: #fff;
+  }
+
+  .select1 {
+    width: 100%;
+    display: block;
+    padding: 0.375rem 0.75rem;
+    border-radius: 5px;
+    background: #ffd800;
+    color: #fff;
+  }
+</style>
+
+<div id="layoutAuthentication">
+  <div id="layoutAuthentication_content">
+    <main>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-7">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+              <div class="card-header"><h3 class="text-center font-weight-light my-4">Create Account</h3></div>
+              <div class="card-body">
+                <section id="OfficeInfo">
+
+                  <form method="POST" id="studentForm" name="studentForm" enctype="multipart/form-data" action="{% url  'SendApplication' %}">
+                    {% csrf_token%}
+
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <div class="form-floating mb-3 mb-md-0">
+                          <div class="form-floating mb-3 mb-md-0" id="name">
+                            {{ studentRegisterForm.name|as_crispy_field }}
+                          </div>
+                        </div>
+                      </div>
+
+
+                      <div class="col-md-6">
+                        <div class="form-floating mb-3 mb-md-0">
+                          <div class="form-floating mb-3 mb-md-0" id="surname">
+                            {{ studentRegisterForm.surname|as_crispy_field }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <div class="form-floating mb-3 mb-md-0">
+                          <div class="form-floating mb-3 mb-md-0" id="phone">
+                            {{ studentRegisterForm.phone|as_crispy_field }}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-floating mb-3 mb-md-0">
+                          <div class="form-floating mb-3 mb-md-0" id="email">
+                            {{ studentRegisterForm.email|as_crispy_field }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <div class="form-floating mb-3 mb-md-0">
+                          <div class="form-floating mb-3 mb-md-0">
+                            Reference Number:
+                            <input type="text" name="referenceNo" readonly id="referenceNo" value="{{referenceNo}}">
+
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-floating mb-3 mb-md-0">
+                          <div class="form-floating mb-3 mb-md-0" id="gender">
+                            {{ studentRegisterForm.gender|as_crispy_field }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <div class="form-floating mb-3 mb-md-0">
+                          <div class="form-floating mb-3 mb-md-0" id="nationality">
+                            {{ studentRegisterForm.nationality|as_crispy_field }}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-floating mb-3 mb-md-0">
+                          <div class="form-floating mb-3 mb-md-0" id="residence">
+                            {{ studentRegisterForm.residence|as_crispy_field }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+
+                      <div class="col-md-6">
+                        <div class="form-floating mb-3 mb-md-0" id="passportNo" value="passportNo">
+                          {{ studentRegisterForm.passportNo|as_crispy_field }}
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label style="background-color:#0d6efd; color:white;"> Degree*</label>
+
+                        <select class="form-control mb-3 mb-md-0" name="degree" id="degree" onclick=SelectFile(this)>
+                          <option style="display:none;"></option>
+                          {% for degrees   in universityDegree    %}
+                          <option value="{{ degrees.degree}}">{{ degrees.degree}}</option>
+                          {% endfor %}
+                        </select>
+
+                      </div>
+
+                    </div>
+
+                    <div class="form-floating mb-3">
+                      <div class="form-floating mb-3 mb-md-0" id="studentid" hidden>
+                        {{studentPaperForm.studentid |as_crispy_field}}
+
+                      </div>
+                    </div>
+
+
+                    <div class="row mb-3">
+
+
+                      <div class="col-md-6" id="picturefile1" hidden>
+                        <label> Personal Picture*</label>
+                        <div class="mb-3 mb-md-0">
+                          <label class="label5">
+                            Select File:
+                            <input class="input5" value='{{studentPaperForm.picture|as_crispy_field}}' type="file" size="60" name="picture" id="picture" accept=".png,.jpeg,.pdf" required>
+                          </label>
+                        </div>
+                      </div>
+
+
+                      <div class="col-md-6" id="passfile1" hidden>
+                        <label> Passport file*</label>
+                        <div class="mb-3 mb-md-0">
+                          <label class="label5">
+                            Select File:
+                            <input class="input5" type="file" size="60" name="passportfile" id="passportfile" accept=".png,.jpeg,.pdf" required>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+
+
+                    <div class="row mb-3" id="SchDipfile1" hidden>
+                      <div class="col-md-6">
+                        <label> School Diploma*</label>
+                        <div class="mb-3 mb-md-0">
+                          <label class="label5">
+                            Select File:
+                            <input class="input5" type="file" size="60" name="schoolDiploma" id="schoolDiploma" accept=".png,.jpeg,.pdf" required>
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6" id="SchDipTransfile1" hidden>
+                        <label> School Diploma Transcript*</label>
+                        <div class="mb-3 mb-md-0">
+                          <label class="label5">
+                            Select File:
+                            <input class="input5" type="file" size="60" name="schoolDiplomaTranscript" id="schoolDiplomaTranscript" accept=".png,.jpeg,.pdf" required>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3" id="BachDipfile1" hidden>
+                      <div class="col-md-6">
+                        <label>  Bachelor Diploma*</label>
+                        <div class="mb-3 mb-md-0">
+                          <label class="label5">
+                            Select File:
+                            <input class="input5" type="file" size="60" name="bachelorDiploma" id="bachelorDiploma" accept=".png,.jpeg,.pdf" required>
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6" id="BachTransfile1" hidden>
+                        <label> Bachelor Transcript*</label>
+                        <div class="mb-3 mb-md-0">
+                          <label class="label5">
+                            Select File:
+                            <input class="input5" type="file" size="60" name="bachelorTranscript" id="bachelorTranscript" accept=".png,.jpeg,.pdf" required>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="row mb-3" id="MastDipfile1" hidden>
+                      <div class="col-md-6">
+                        <label> Master Diploma*</label>
+                        <div class="mb-3 mb-md-0">
+                          <label class="label5">
+                            Select File:
+                            <input class="input5" type="file" size="60" name="masterDiploma" id="masterDiploma" accept=".png,.jpeg,.pdf" required>
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6" id="MastTransfile1" hidden>
+                        <label> Master Transcript*</label>
+                        <div class="mb-3 mb-md-0">
+                          <label class="label5">
+                            Select File:
+                            <input class="input5" type="file" size="60" name="masterTranscript" id="masterTranscript" accept=".png,.jpeg,.pdf" required>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="row mb-3" id="RecoLetfile1" hidden>
+                      <div class="col-md-6">
+                        <label> Recommendation Letter*</label>
+                        <div class="mb-3 mb-md-0">
+                          <label class="label5">
+                            Select File:
+                            <input class="input5" type="file" size="60" name="recommendationLetter" id="recommendationLetter" accept=".png,.jpeg,.pdf" required>
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6" id="CVfile1" hidden>
+                        <label> C.V*</label>
+                        <div class="mb-3 mb-md-0">
+                          <label class="label5">
+                            Select File:
+                            <input class="input5" type="file" size="60" name="CVimge" id="CVimge" accept=".png,.jpeg,.pdf" required>
+                          </label>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <label style="display:none;"> Department5aa : </label>
+                    <select class="form-control mb-3 mb-md-0" name="department5aa" style="display:none;" readonly id="department5aa">
+                      {% for universityRegisterlists      in universityRegisterlist    %}
+                      <option data-foo="{{universityRegisterlists.universityName_id}}" value="{{universityRegisterlists.department}}">{{ universityRegisterlists.department}}</option>
+                      {% endfor %}
+                    </select>
+
+                    <label> universityName : </label>
+                    <select class="form-control mb-3 mb-md-0" name="universityName" readonly id="universityName" onchange="changDepartment10(this)">
+                      {% for universityNameLists      in universityNameList    %}
+                      <option data-foo="{{universityNameLists.id}}" value="{{universityNameLists.id}}">{{ universityNameLists.universityName}}</option>
+                      {% endfor %}
+                    </select>
+
+                    <label id="lev7"> Department : </label>
+                    <select class="form-control mb-3 mb-md-0" name="department" disabled readonly id="department">
+                      {% for universityRegisterlists      in universityRegisterlist    %}
+                      <option data-foo="{{universityRegisterlists.universityName_id}}" value="{{universityRegisterlists.department}}">{{ universityRegisterlists.department}}</option>
+                      {% endfor %}
+                    </select>
+
+                    <div class="mt-4 mb-0">
+                      <input class="btn btn-primary btn-block" id="btnAdd2" type="button" value="+Add Documents" onclick="AddFileBox('Files')" />
+                    </div>
+                    <div id="Files" name="F0">
+
+                    </div>
+
+                    <br>
+                    <input class="btn btn-primary btn-block" id="btnAdd1" type="button" value="+Add more" onclick="AddSelectBox('Departments')" />
+                    <br>
+                    <div id="Departments" name="0">
+                      <!--Textboxes will be added here -->
+                    </div>
+
+
+                    <div class="mt-4 mb-0">
+                      <div class="d-grid">
+                        <input class="btn btn-primary btn-block" type="submit" value="Send">
+                        <input type="hidden" name="username" id="username" value="{{ username }}">
+                      </div>
+                    </div>
+
+                  </form>
+
+
+                </section>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+
+</div>
+
+<script type="text/javascript">
+
+
+  function changDepartment11(val) {
+
+    departmentTemp = 'department' + val;
+    universityNameTemp = 'universityName' + val;
+    x22 = document.getElementById(departmentTemp);
+    while (x22.length > 0) {
+      x22.remove(0);
+    }
+
+    document.getElementById(departmentTemp).innerHTML = document.getElementById("department5aa").innerHTML;
+    document.getElementById(departmentTemp).removeAttribute("disabled");
+    x1 = document.getElementById(universityNameTemp);
+    x2 = document.getElementById(departmentTemp);
+
+    xo1 = document.getElementById(universityNameTemp).options;
+    var vals = xo1[xo1.selectedIndex].getAttribute('data-foo');
+
+    var ind = 0;
+
+
+
+    while (ind < x2.length + 1) {
+      xo2 = document.getElementById(departmentTemp).options;
+      valss = x2.options[ind].getAttribute('data-foo');
+
+      if (valss === vals) {
+        ind += 1;
+      }
+      else {
+        x2.remove(ind);
+      }
+    }
+
+  }
+
+
+  function AddFileBox(files) {
+    var div = document.createElement('DIV');
+    div.id = 1;
+
+    elmentId = document.getElementById('Files').lastElementChild;
+
+    if (elmentId != null) {
+
+      if (elmentId.id != 'Files') {
+
+        ids = parseInt(elmentId.id) + 1;
+        div.id = ids;
+      } else {
+        elmentId.id = div.id;
+      }
+    }
+
+    div.innerHTML += GetDynamicSelectBoxF(div.id);
+
+    document.getElementById('Files').appendChild(div);
+
+    var div2 = document.getElementById('Files');
+    var div2Paras = div2.getElementsByTagName('input');
+    var num = div2Paras.length;
+    document.getElementById('Files').setAttribute('name', 'F' + num);
+  }
+
+  function changDepartment10() {
+    x22 = document.getElementById("department");
+
+    while (x22.length > 0) {
+      x22.remove(0);
+    }
+    document.getElementById("department").innerHTML = document.getElementById("department5aa").innerHTML;
+    document.getElementById("department").removeAttribute("disabled");
+    x1 = document.getElementById("universityName");
+    x2 = document.getElementById("department");
+
+    xo1 = document.getElementById("universityName").options;
+    var vals = xo1[xo1.selectedIndex].getAttribute('data-foo');
+
+    var ind = 0;
+
+
+    while (ind < x2.length + 1) {
+      xo2 = document.getElementById("department").options;
+      valss = x2.options[ind].getAttribute('data-foo');
+
+      if (valss === vals) {
+        ind += 1;
+      }
+      else {
+        x2.remove(ind);
+      }
+    }
+
+  }
+
+
+
+
+  function GetDynamicSelectBox(val) {
+    return   '<label> universityName :' + val + ' </label>' +
+      '<select  class="form-control mb-3 mb-md-0"  id=universityName' + val + '  name=universityName   onchange="changDepartment11(' + val + ')" > ' +
+
+      '  {% for universityNameLists in universityNameList %}  ' +
+      '     <option data-foo="{{universityNameLists.id}}" value="{{universityNameLists.id}}">{{ universityNameLists.universityName}}</option>  ' +
+      '{% endfor %}  ' +
+      '</select >' +
+
+      '<label> department :' + val + '</label>' +
+      ' <select class="form-control mb-3 mb-md-0" disabled id=department' + val + ' name=department>' +
+      '  {% for universityRegisterlists in universityRegisterlist %}  ' +
+      '  <option data-foo="{{universityRegisterlists.universityName_id}}"  value="{{universityRegisterlists.department}}">{{ universityRegisterlists.department }}</option>  ' +
+      '{% endfor %}  ' +
+        '  </select>' +
+        '<input name = "DynamicSelectBox" type="button" value="Remove"  onclick="RemoveSelectBox(this)" />'   ;
+  }
+
+
+  function GetDynamicSelectBoxF(val) {
+    return '<label>Document name :' + val + '</label>' +
+      ' <input class="form-control mb-3 mb-md-0"   type="text" size="60"   id=filePaperName' + val + ' name=filePaperName  required>' +
+      ' <input class="form-control mb-3 mb-md-0"   type="file" size="60"   id=filePaper' + val + ' name=filePaper accept=".png,.jpeg,.pdf" required>' +
+
+      '<input name = "DynamicSelectBox" type="button" value="Remove"  onclick="RemoveSelectBoxF(this)" />';
+  }
+
+
+  function RemoveSelectBoxF(div) {
+    document.getElementById('Files').removeChild(div.parentNode);
+
+
+  }
+
+  function RemoveDIV(div) {
+
+    var div2 = document.getElementById('Files');
+    var div2Paras = div2.getElementsByTagName('input');
+    var num = div2Paras.length;
+    if (num > 1) {
+      document.getElementById('Files').removeChild(div.parentNode);
+      elmentId = document.getElementById('Files').lastElementChild;
+      document.getElementById('SchoolDiploma').setAttribute('name', num - 1);
+
+    }
+  }
+  function GetDynamicSelectBox9(value) {
+    return '<input name = "DynamicSelectBox" type="button" value="Remove"  onclick="RemoveSelectBox(this)" />'
+    }
+
+    function AddSelectBox(val) {
+
+      var div = document.createElement('DIV');
+      div.id = 1;
+      elmentId = document.getElementById('Departments').lastElementChild;
+      document.getElementById('Departments').setAttribute('name', '0');
+
+
+      if (elmentId != null) {
+        ids = parseInt(elmentId.id) + 1;
+        div.id = ids;
+      }
+
+
+
+      div.innerHTML += GetDynamicSelectBox(div.id);
+      document.getElementById('Departments').appendChild(div);
+
+      var div2 = document.getElementById('Departments');
+      var div2Paras = div2.getElementsByTagName('input');
+      var num = div2Paras.length  ;
+      document.getElementById('Departments').setAttribute('name',  num);
+    }
+    function RemoveSelectBox(div) {
+      document.getElementById('Departments').removeChild(div.parentNode);
+      elmentId = document.getElementById('Departments').lastElementChild;
+      document.getElementById('Departments').setAttribute('name', '0');
+
+      var div2 = document.getElementById('Departments');
+      var div2Paras = div2.getElementsByTagName('input');
+      var num = div2Paras.length;
+      document.getElementById('SchoolDiploma').setAttribute('name', num);
+
+    }
+
+  function ClearList(val) {
+    elme = document.getElementById(val).lastElementChild;
+    num = parseInt(elme.id)
+    for (i = 0; i < num; i++) {
+      const elme = document.getElementById(val);
+      elme.removeChild(elme.firstElementChild);
+
+    }
+
+  }
+
+  function SelectFile(val) {
+    var x = val.options[val.selectedIndex].text;
+    document.getElementById('passfile1').setAttribute("hidden", true);
+    document.getElementById('picturefile1').setAttribute("hidden", true);
+
+    document.getElementById('SchDipfile1').setAttribute("hidden", true);
+    document.getElementById('SchDipTransfile1').setAttribute("hidden", true);
+    document.getElementById('BachDipfile1').setAttribute("hidden", true);
+    document.getElementById('BachTransfile1').setAttribute("hidden", true);
+
+
+    document.getElementById('MastDipfile1').setAttribute("hidden", true);
+    document.getElementById('MastTransfile1').setAttribute("hidden", true);
+    document.getElementById('RecoLetfile1').setAttribute("hidden", true);
+    document.getElementById('CVfile1').setAttribute("hidden", true);
+
+
+    document.getElementById('schoolDiploma').required = false;
+    document.getElementById('schoolDiplomaTranscript').required = false;
+
+    document.getElementById('bachelorDiploma').required = false;
+    document.getElementById('bachelorTranscript').required = false;
+
+    document.getElementById('masterDiploma').required = false;
+    document.getElementById('masterTranscript').required = false;
+
+    document.getElementById('recommendationLetter').required = false;
+    document.getElementById('CVimge').required = false;
+
+
+
+    if (x == 'PhD') {
+      document.getElementById('passfile1').removeAttribute("hidden");
+      document.getElementById('picturefile1').removeAttribute("hidden");
+
+      document.getElementById('BachDipfile1').removeAttribute("hidden");
+      document.getElementById('MastDipfile1').removeAttribute("hidden");
+      document.getElementById('MastTransfile1').removeAttribute("hidden");
+      document.getElementById('RecoLetfile1').removeAttribute("hidden");
+      document.getElementById('CVfile1').removeAttribute("hidden");
+
+
+
+      document.getElementById('schoolDiploma').required = false;
+      document.getElementById('schoolDiplomaTranscript').required = false;
+      document.getElementById('bachelorDiploma').required = true;
+      document.getElementById('bachelorTranscript').required = false;
+
+      document.getElementById('masterDiploma').required = true;
+      document.getElementById('masterTranscript').required = true;
+      document.getElementById('recommendationLetter').required = true;
+      document.getElementById('CVimge').required = true;
+
+
+
+    }
+    if (x == 'Master') {
+      document.getElementById('passfile1').removeAttribute("hidden");
+      document.getElementById('picturefile1').removeAttribute("hidden");
+
+      document.getElementById('BachDipfile1').removeAttribute("hidden");
+      document.getElementById('BachTransfile1').removeAttribute("hidden");
+      document.getElementById('RecoLetfile1').removeAttribute("hidden");
+      document.getElementById('CVfile1').removeAttribute("hidden");
+
+      document.getElementById('bachelorDiploma').required = true;
+      document.getElementById('bachelorTranscript').required = true;
+
+      document.getElementById('recommendationLetter').required = true;
+      document.getElementById('CVimge').required = true;
+
+      document.getElementById('schoolDiploma').required = false;
+      document.getElementById('schoolDiplomaTranscript').required = false;
+      document.getElementById('masterDiploma').required = false;
+      document.getElementById('masterTranscript').required = false;
+
+    }
+
+    if ((x == 'Diploma') || (x == 'Bachelor') || (x == 'Prep'))   {
+      document.getElementById('passfile1').removeAttribute("hidden");
+      document.getElementById('picturefile1').removeAttribute("hidden");
+
+      document.getElementById('SchDipfile1').removeAttribute("hidden");
+      document.getElementById('SchDipTransfile1').removeAttribute("hidden");
+
+
+      document.getElementById('bachelorDiploma').required = false;
+      document.getElementById('bachelorTranscript').required = false;
+
+      document.getElementById('masterDiploma').required = false;
+      document.getElementById('masterTranscript').required = false;
+
+      document.getElementById('recommendationLetter').required = false;
+      document.getElementById('CVimge').required = false;
+
+
+    }
+
+
+   }
+
+
+</script>
+{% endblock %}

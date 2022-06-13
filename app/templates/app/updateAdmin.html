@@ -1,0 +1,235 @@
+{% extends "app/layoutAdmin.html" %}
+
+
+
+
+{% block content %}
+
+{% load crispy_forms_tags %}
+{% load crispy_forms_field %}
+
+<style>
+
+
+  .input5[type="file"] {
+    font-size: 17px;
+    color: #b8b8b8;
+  }
+
+  .label5 {
+    width: 100%;
+    display: block;
+    padding: 0.375rem 0.75rem;
+    border-radius: 5px;
+    background: #0d6efd;
+    color: #fff;
+  }
+
+  .select1 {
+    width: 100%;
+    display: block;
+    padding: 0.375rem 0.75rem;
+    border-radius: 5px;
+    background: #ffd800;
+    color: #fff;
+  }
+</style>
+                    {% csrf_token%}
+                 
+
+<div id="layoutAuthentication">
+  <div id="layoutAuthentication_content">
+    <main>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-7">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+              <div class="card-header"><h3 class="text-center font-weight-light my-4">User information</h3></div>
+              <div class="card-body">
+                <section id="OfficeInfo">
+
+                  <form method="POST" id="studentForm" name="studentForm" enctype="multipart/form-data" action="{% url  UpdateAdmin username %}">
+                    {% csrf_token%}
+
+                    {% for pers in personinfo %}
+
+                    <div class="row mb-3">
+
+                      <div class="col-md-6">
+                        <label> First name: </label>
+                        <input class="form-control mb-3 mb-md-0" type="text" name="first_name" id="first_name" value="{{ pers.first_name }}">
+                      </div>
+
+                      <div class="col-md-6">
+                        <label> Last name: </label>
+                        <input class="form-control mb-3 mb-md-0" type="text" name="last_name" id="last_name" value="{{ pers.last_name }}">
+                      </div>
+
+                    </div>
+
+
+                    <div class="row mb-3">
+
+                      <div class="col-md-6">
+                        <label>Username:</label>
+                        <input class="form-control mb-3 mb-md-0" type="text" readonly name="username" id="username" value="{{ pers.username }}">
+                      </div>
+
+                      <div class="col-md-6">
+                        <label> Email: </label>
+                        <input class="form-control mb-3 mb-md-0" type="email" name="email" id="email" value="{{ pers.email }}">
+                      </div>
+
+                    </div>
+
+
+                    <div class="row mb-3">
+
+                      <div class="col-md-6">
+                        <label>Active: </label>
+                        <select class="form-control mb-3 mb-md-0" readonly name="is_active" id="is_active" value="{{ pers.is_active }}">
+                          {% if pers.is_active|stringformat:"s" in  'False'|stringformat:"s" %}
+                          <option value="True">True</option>
+                          {% else %}
+                          <option value="False">False</option>
+                          {% endif %}
+                          <option selected="selected" value="{{ pers.is_active }}">{{ pers.is_active }}</option>
+                        </select>
+
+                      </div>
+
+
+                      <div class="col-md-6">
+                        <label> Date joined: </label>
+                        <input class="form-control mb-3 mb-md-0" type="text" readonly name="date_joined" id="date_joined" value="{{ pers.date_joined }}">
+                      </div>
+
+                    </div>
+                    {% for person in persons %}
+                    <div class="row mb-3">
+
+                      <div class="col-md-6">
+                        <label> Phone: </label>
+                        <input class="form-control mb-3 mb-md-0" type="text" name="phone" id="phone" value="{{ person.phone }}">
+                      </div>
+
+                      <div class="col-md-6">
+                        <label> Address: </label>
+                        <input class="form-control mb-3 mb-md-0" type="text" name="address" id="address" value="{{ person.address }}">
+                      </div>
+
+                    </div>
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <label> Residence: </label>
+                        <select class="form-control mb-3 mb-md-0" name="residence" readonly id="residence">
+                          {% for residence    in residence    %}
+                          {% if residence.id|stringformat:"s" in   person.residence_id|stringformat:"s" %}
+                          <option selected="selected" value="{{residence.id}}">{{ residence.residence}}</option>
+                          {% else %}
+                          <option value="{{residence.id}}">{{ residence.residence}}</option>
+                          {% endif %}
+                          {% endfor %}
+                        </select>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label> Staff: </label>
+
+                        <select class="form-control mb-3 mb-md-0" readonly name="is_staff" id="is_staff" value="{{ pers.is_staff }}">
+                          {% if pers.is_staff|stringformat:"s" in  'False'|stringformat:"s" %}
+                          <option value="True">True</option>
+                          {% else %}
+                          <option value="False">False</option>
+                          {% endif %}
+                          <option selected="selected" value="{{ pers.is_staff }}">{{ pers.is_staff }}</option>
+                        </select>
+
+                      </div>
+                      {% endfor %}
+                    </div>
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <label> User type: </label>
+                        <select class="form-control mb-3 mb-md-0" readonly name="userType" id="userType">
+                          <option></option>
+                          {% for userType in userTypes %}
+                          {% if userTypeInfo|stringformat:"s" in  userType.userType|stringformat:"s" %}
+                          <option selected="selected" value="{{ userType.userType }}">{{ userType.userType }}</option>
+                          {% else %}
+                          <option value="{{ userType.userType }}">{{ userType.userType }}</option>
+                          {% endif %}
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="col-md-6">
+                        <label>Employee name:</label>
+                        <select class="form-control mb-3 mb-md-0" readonly name="empType" id="empType">
+
+                          {% for empType in empTypes %}
+                          {% if empType.offid|stringformat:"s" in  employeeIdOffice|stringformat:"s" %}
+                          <option selected="selected" value="{{ empType.offid }}">{{ empType.username }}</option>
+                          {% else %}
+                          <option value="{{ empType.offid }}">{{ empType.username }}</option>
+                          {% endif %}
+                          {% endfor %}
+                        </select>
+
+                      </div>
+                    </div>
+                    <div class="row mb-12">
+                      <div class="col-md-12">
+                        <label> Current Password: </label>
+                        <input class="form-control mb-3 mb-md-0" type="text" readonly name="password" id="password" value="{{ pers.password }}">
+                      </div>
+                    </div>
+ 
+                    <div class="row mb-12">
+
+                      <div class="col-md-12">
+                        {{ userCreateionForm.password1|as_crispy_field }}
+                      </div>
+ 
+
+                    </div>
+                    <div class="mt-4 mb-0">
+                      <div class="d-grid">
+                        <input class="btn btn-primary btn-block" type="submit" value="Update">
+                        <input type="hidden" name="personid" id="personid" value="{{pers.id}}">
+                      </div>
+                    </div>
+                    {% endfor %}
+
+
+                  </form>
+
+
+
+                  <form method="POST" id="studentForm1" name="studentForm1" enctype="multipart/form-data" action="{% url  officepageAdmin  username  %}">
+                    {% csrf_token%}
+                    <div class="mt-4 mb-0">
+                      <div class="d-grid">
+                        <input class="btn btn-primary btn-block" type="submit" value="Back">
+                        <input type="hidden" name="usernameAdmin" id="usernameAdmin" value="{{ username }}">
+                      </div>
+                    </div>
+                  </form>
+
+                </section>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+
+</div>
+
+
+
+
+
+  {% endblock %}

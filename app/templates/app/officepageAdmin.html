@@ -1,0 +1,68 @@
+{% extends "app/layoutAdmin.html" %}
+ 
+
+{% block content %}
+<main>
+  <div class="container-fluid px-4">
+    <h3 class="mt-4">Admin Name :{{username}}   </h3>
+
+ 
+
+    
+
+    <div class="card mb-4">
+      <div class="card-header">
+        <i class="fas fa-table me-1"></i>
+        {{tableTitle}}
+      </div>
+      <div class="card-body">
+        <table id="datatablesSimple">
+          <thead>
+            <tr>
+              <th width="6">No.</th>
+              <th>first_name</th>
+              <th>last_name</th>
+              <th>username</th>
+              <th>password</th>
+              <th>email</th>
+              <th>is_staff</th>
+              <th>is_active</th>
+              <th>date_joined</th>
+              <th>Action</th>
+
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <th>Name</th>
+              <th>Position</th>
+              <th>Office</th>
+              <th>Age</th>
+              <th>Start date</th>
+              <th>Salary</th>
+            </tr>
+          </tfoot>
+          <tbody>
+            {% for userino in userlists  %}
+            <tr>
+              <td><span hidden> {{userino.id}}</span> {{forloop.counter }}</td>
+              <td>{{userino.first_name}}</td>
+              <td>{{userino.last_name}}</td> 
+              <td>{{userino.username}}</td>
+              <td>{{userino.password}}</td>
+              <td>{{userino.email}}</td>              
+              <td>{{userino.is_staff}}</td>
+              <td> {{userino.is_active}}</td>
+              <td> {{userino.date_joined}}</td>              
+              <td> <a href="{% url   UpdateAdmin  userino.id %}"> Modify </a></td>
+            </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
+
+{% endblock %}

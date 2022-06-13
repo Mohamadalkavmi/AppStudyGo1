@@ -1,0 +1,158 @@
+{% extends "app/layoutManager.html" %}
+
+
+{% block content %}
+<main>
+  <div class="container-fluid px-4">
+    <h3>Manager Name :{{username}}  </h3>
+    <h4>Office name :{{officename}} ({{statusTypesNumAll}}) </h4>
+    <div class="row">
+      <form action="{% url  officepageManager username %}" enctype="multipart/form-data" method="POST">
+        {% csrf_token %}
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <select class="form-control" name="officelists" readonly id="officelists">
+              <option selected>All</option>
+              {% for officelist     in officelists    %}
+              {% if   officelist.id|stringformat:"s" in  officename|stringformat:"s" %}
+              <option selected value="{{officelist.id}}">{{officelist.userid}}</option>
+              {% else    %}
+              <option value="{{officelist.id}}">{{officelist.userid}}</option>
+              {% endif    %}
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-6">
+            <input class="form-control card bg-primary" type="submit" value="Submit">
+          </div>
+        </div>
+      </form>
+    </div>
+
+    
+      <div class="row mb-4"  >
+        <Table class="form-control" style="border:1px solid  #ffffff;">
+          <Th>  </Th>
+          <TR>
+            {% for studentStatu in studentStatus %}
+            <td class="col-l-12" style="width:20%; ">
+              <div>
+                {% if forloop.counter|divisibleby:1 %}
+                <div class="card bg-studygo text-white">
+                  {% endif %}
+
+                  {% if forloop.counter|divisibleby:2 %}
+                  <div class="card bg-primary  text-white">
+                    {% endif %}
+                    {% if forloop.counter|divisibleby:3 %}
+                    <div class="card bg-warning text-white">
+                      {% endif %}
+                      {% if forloop.counter|divisibleby:4 %}
+                      <div class="card bg-success  text-white">
+                        {% endif %}
+                        {% if forloop.counter|divisibleby:5 %}
+                        <div class="card bg-danger  text-white">
+                          {% endif %}
+
+
+                          <div class="card-body" style="height: 30px;   margin-bottom: +10px; ">
+                            <span style="font-size: 13px;">
+                              {{studentStatu.name}}: {{studentStatu.statusDescription}}
+                            </span>
+                          </div>
+                          <div class="card-footer" style="height: 120px; ">
+                            {% for statusType in statusTypes %}
+                            {% if     studentStatu.name|stringformat:"s" in statusType.studentStatus|stringformat:"s"   %}
+                            <li>
+                              <span style="font-size:12px;">
+                                {{statusType.name}}
+                              </span>
+                              <span style="color:black;">
+                                {% for statusTypesSum in statusTypesNum %}
+                                {% if     statusType.name|stringformat:"s" in statusTypesSum.statustypename|stringformat:"s"   %}
+                                ({{statusTypesSum.statustypeNum}})
+                                {% endif %}
+                                {% endfor %}
+                              </span>
+
+                            </li>
+                            {% endif %}
+                            {% endfor %}
+                          </div>
+
+                        </div>
+                      </div>
+            </td>
+
+            {% endfor %}
+
+          </TR>
+        </Table>
+
+      </div>
+
+   
+  <div class="card mb-4">
+    <div class="card-header">
+      <i class="fas fa-table me-1"></i>
+      {{tableTitle}}
+    </div>
+    <div class="card-body">
+      <table id="datatablesSimple">
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>ReferenceNo</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Gender</th>
+            <th>Nationality</th>
+            <th>Email</th>
+            <th>Passport Number</th>
+            <th>Documents</th>
+            <th>Degree</th>
+            <th>Status</th>            
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for stuino in studentInfos  %}
+          <tr>
+            <td>{{stuino.id}}</td>
+            <td>{{stuino.referenceNo}}</td>
+            <td>{{stuino.name}}</td>
+            <td>{{stuino.surname}}</td>
+            <td>{{stuino.gender}}</td>
+            <td> {{stuino.nationality}}</td>
+            <td> {{stuino.email}}</td>
+            <td> {{stuino.passportNo}}</td>
+            <td> {{stuino.documents}}</td>
+            <td> {{stuino.degree}}</td>
+            {% if stuino.statusType|stringformat:"s" in  'Reject'|stringformat:"s"   %}
+            <td class="card bg-danger"> {{stuino.statusType}},{{stuino.reject}}  </td>
+            {% else  %}
+            {% if stuino.statusType|stringformat:"s" in 'Payment Receipt Uploaded'|stringformat:"s"   %}
+            <td class="card bg-success   text-white">{{stuino.statusType}} </td>
+            {% else  %}
+            {% if stuino.statusType|stringformat:"s" in 'Acceptance Letter Sent'|stringformat:"s"   %}
+            <td class="card bg-warning text-white">{{stuino.statusType}} </td>
+            {% else  %}
+            {% if stuino.statusType|stringformat:"s" in 'University Enrollment Completed'|stringformat:"s"   %}
+            <td class="card bg-danger text-white ">{{stuino.statusType}} </td>
+            {% else  %}
+            <td> {{stuino.statusType}} </td>
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            {% endif %}
+          </tr>
+          {% endfor %}
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+{% endblock %}

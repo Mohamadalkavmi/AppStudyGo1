@@ -1,0 +1,939 @@
+{% extends "app/layout.html" %}
+
+
+
+
+{% block content %}
+ 
+{% load crispy_forms_tags %}
+{% load crispy_forms_field %}
+
+<style>
+
+
+  .input5[type="file"] {
+    font-size: 17px;
+    color: #b8b8b8;
+  }
+
+  .label5 {
+    width: 100%;
+    display: block;
+    padding: 0.375rem 0.75rem;
+    border-radius: 5px;
+    background: #0d6efd;
+    color: #fff;
+  }
+
+  .select1 {
+    width: 100%;
+    display: block;
+    padding: 0.375rem 0.75rem;
+    border-radius: 5px;
+    background: #ffd800;
+    color: #fff;
+  }
+</style>
+
+<div id="layoutAuthentication">
+  <div id="layoutAuthentication_content">
+    <main>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-7">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+              <div class="card-header"><h3 class="text-center font-weight-light my-4">Student information</h3></div>
+              <div class="card-body">
+                <section id="OfficeInfo">
+
+                  <form method="POST" id="studentForm" name="studentForm" enctype="multipart/form-data" action="{% url  UpdateInfo username %}">
+                    {% csrf_token%}
+                    {% for studentInfo in studentInfos %}
+
+                    <div class="row mb-3">
+
+                      <div class="col-md-6">
+                        <label> Name: </label>
+                        <input class="form-control mb-3 mb-md-0" type="text" name="name" id="name" value="{{ studentInfo.name }}">
+                      </div>
+
+                      <div class="col-md-6">
+                        <label> Surname: </label>
+                        <input class="form-control mb-3 mb-md-0" type="text" name="surname" id="surname" value="{{ studentInfo.surname }}">
+                      </div>
+
+                    </div>
+
+                    <div class="row mb-3">
+
+                      <div class="col-md-6">
+                        <label> Phone: </label>
+                        <input class="form-control mb-3 mb-md-0" type="text" name="phone" id="phone" value="{{ studentInfo.phone }}">
+                      </div>
+
+                      <div class="col-md-6">
+                        <label> Email: </label>
+                        <input class="form-control mb-3 mb-md-0" type="text" name="email" id="email" value="{{ studentInfo.email }}">
+                      </div>
+
+                    </div>
+
+                    <div class="row mb-3">
+
+                      <div class="col-md-6">
+                        <label> Reference No: </label>
+                        <input class="form-control mb-3 mb-md-0" type="text" name="referenceNo" readonly id="referenceNo" value="{{ studentInfo.referenceNo }}">
+                      </div>
+
+                      <div class="col-md-6">
+                        <label> Gender: </label>
+                        <select class="form-control mb-3 mb-md-0" name="gender" readonly id="gender">
+                          {% for studentGendere     in studentGendereForm    %}
+                          {% if studentInfo.gender|stringformat:"s" in  studentGendere.gender|stringformat:"s" %}
+                          <option selected="selected" value="{{ studentGendere.id}}">{{ studentGendere.gender}}</option>
+                          {% else %}
+                          <option value="{{ studentGendere.id}}">{{ studentGendere.gender}}</option>
+                          {% endif %}
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+
+                      <div class="col-md-6">
+                        <label> Nationality: </label>
+                        <select class="form-control mb-3 mb-md-0" name="nationality" readonly id="nationality">
+                          {% for studentNationality    in studentNationalityForm    %}
+                          {% if studentInfo.nationality|stringformat:"s" in  studentNationality.nationality|stringformat:"s" %}
+                          <option selected="selected" value="{{ studentNationality.id}}">{{ studentNationality.nationality}}</option>
+                          {% else %}
+                          <option value="{{ studentNationality.id}}">{{ studentNationality.nationality}}</option>
+                          {% endif %}
+                          {% endfor %}
+                        </select>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label> Residence: </label>
+                        <select class="form-control mb-3 mb-md-0" name="residence" readonly id="residence">
+                          {% for studentResidence    in studentResidenceForm    %}
+                          {% if studentInfo.residence|stringformat:"s" in  studentResidence.residence|stringformat:"s" %}
+                          <option selected="selected" value="{{ studentResidence.id}}">{{ studentResidence.residence}}</option>
+                          {% else %}
+                          <option value="{{ studentResidence.id}}">{{ studentResidence.residence}}</option>
+                          {% endif %}
+                          {% endfor %}
+                        </select>
+                      </div>
+
+                    </div>
+
+                    <div class="row mb-3">
+
+                      <div class="col-md-6">
+                        <label> PassportNo: </label>
+                        <input class="form-control mb-3 mb-md-0" type="text" name="passportNo" id="passportNo" value="{{ studentInfo.passportNo }}">
+                      </div>
+
+                      <div class="col-md-6">
+                        <label> Degree: </label>
+                        <input type="hidden" value="{{studentInfo.degree}}" id="studentdegreeTemp" name="studentdegreeTemp">{{studentInfo.degree}}
+                        <select class="form-control mb-3 mb-md-0" name="degree" readonly id="degree" onclick=SelectFile(this)>
+                          {% for universityDegree     in universityDegreeForm    %}
+                          {% if studentInfo.degree|stringformat:"s" in  universityDegree.degree|stringformat:"s" %}
+                          <option selected="selected" value="{{ universityDegree.id}}">{{ universityDegree.degree}}</option>
+                          {% else %}
+                          <option value="{{ universityDegree.id}}">{{ universityDegree.degree}}</option>
+                          {% endif %}
+                          {% endfor %}
+                        </select>
+                      </div>
+
+
+                    </div>
+
+                    <div class="row mb-3">
+
+                      <div class="col-md-6">
+                        <label> Documents details: </label>
+                        <input class="form-control mb-3 mb-md-0" type="text" name="documents" id="documents" value="{{ studentInfo.documents }}">
+                      </div>
+
+                      <div class="col-md-6" hidden>
+                        <label> status Type: </label>
+                        <select class="form-control mb-3 mb-md-0" name="statusType" readonly id="statusType">
+                          {% for statusType    in statusTypeForm    %}
+                          {% if statusType.name|stringformat:"s" in  studentInfo.statusType|stringformat:"s" %}
+                          <option selected="selected" value="{{ statusType.id}}">{{ statusType.name}}</option>
+                          {% else %}
+                          <option value="{{ statusType.id}}">{{ statusType.name}}</option>
+                          {% endif %}
+                          {% endfor %}
+                        </select>
+                      </div>
+
+                    </div>
+
+                    <div class="form-floating mb-3">
+                      <div class="form-floating mb-3 mb-md-0" hidden>
+                        <input type="text" size="60" name="studentid" id="studentid" value="{{studentInfo.id}}">
+
+                      </div>
+                    </div>
+                    {% endfor %}
+
+                    <div id="filesInfo2">
+
+                      <div class="row mb-3">
+                        {% for studentpaper in studentPaperlist %}
+                        {% if studentpaper.degreePaper|stringformat:"s" in  'Perosnal picture'|stringformat:"s" %}
+                        <div class="col-md-6" id="picturefile1u">
+                          <label> Personal Picture</label>
+                          <a href="{{studentpaper.picture.url}}" download>Download</a>
+                          <img class="form-control mb-3 mb-md-0" src="{{studentpaper.picture.url}}" alt='{{studentpaper.degreePaper}}' width="240" height="240">
+                          <div class="mb-3 mb-md-0">
+                            <label class="label5">
+                              Select File:
+                              <input class="input5" type="file" size="60" name="pictureu" id="pictureu" accept=".png,.jpeg,.pdf">
+                            </label>
+                          </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        {% for studentpaper in studentPaperlist %}
+                        {% if studentpaper.degreePaper|stringformat:"s" in  'Passport'|stringformat:"s" %}
+                        <div class="col-md-6" id="passfile1u">
+                          <label> Passport file</label>
+                          <a href="{{studentpaper.picture.url}}" download>Download</a>
+                          <img class="form-control mb-3 mb-md-0" src="{{studentpaper.picture.url}}" alt='{{studentpaper.degreePaper}}' width="240" height="240">
+                          <div class="mb-3 mb-md-0">
+                            <label class="label5">
+                              Select File:
+                              <input class="input5" type="file" size="60" name="passportfileu" id="passportfileu" accept=".png,.jpeg,.pdf">
+                            </label>
+                          </div>
+                        </div>
+
+                      </div>
+                      {% endif %}
+                      {% endfor %}
+
+
+                      <div class="row mb-3">
+                        {% for studentpaper in studentPaperlist %}
+                        {% if studentpaper.degreePaper|stringformat:"s" ==  'School Diploma'|stringformat:"s" %}
+                        <div class="col-md-6" id="SchDipfile1u">
+                          <label>School Diploma</label>
+                          <a href="{{studentpaper.picture.url}}" download>Download</a>
+                          <img class="form-control mb-3 mb-md-0" src="{{studentpaper.picture.url}}" alt='{{studentpaper.degreePaper}}' width="240" height="240">
+
+                          <div class="mb-3 mb-md-0">
+                            <label class="label5">
+                              Select File:
+                              <input class="input5" type="file" size="60" name="schoolDiplomau" id="schoolDiplomau" accept=".png,.jpeg,.pdf">
+                            </label>
+                          </div>
+                        </div>
+                        {% endif %}
+
+                        {% if studentpaper.degreePaper|stringformat:"s" ==  'School Diploma Transcript'|stringformat:"s" %}
+                        <div class="col-md-6" id="SchDipTransfile1u">
+                          <label>School Diploma Transcript</label>
+                          <a href="{{studentpaper.picture.url}}" download>Download</a>
+                          <img class="form-control mb-3 mb-md-0" src="{{studentpaper.picture.url}}" alt='{{studentpaper.degreePaper}}' width="240" height="240">
+
+                          <div class="mb-3 mb-md-0">
+                            <label class="label5">
+                              Select File:
+                              <input class="input5" type="file" size="60" name="schoolDiplomaTranscriptu" id="schoolDiplomaTranscriptu" accept=".png,.jpeg,.pdf">
+                            </label>
+                          </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                      </div>
+
+
+                      <div class="row mb-3">
+                        {% for studentpaper in studentPaperlist %}
+                        {% if studentpaper.degreePaper|stringformat:"s" ==  'Bachelor Diploma'|stringformat:"s" %}
+                        <div class="col-md-6" id="BachDipfile1u">
+                          <label>  Bachelor Diploma</label>
+                          <a href="{{studentpaper.picture.url}}" download>Download</a>
+                          <img class="form-control mb-3 mb-md-0" src="{{studentpaper.picture.url}}" alt='{{studentpaper.degreePaper}}' width="240" height="240">
+
+                          <div class="mb-3 mb-md-0">
+                            <label class="label5">
+                              Select File:
+                              <input class="input5" type="file" size="60" name="bachelorDiplomau" id="bachelorDiplomau" accept=".png,.jpeg,.pdf">
+                            </label>
+                          </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        {% for studentpaper in studentPaperlist %}
+                        {% if studentpaper.degreePaper|stringformat:"s" ==  'Bachelor Diploma Transcript'|stringformat:"s" %}
+                        <div class="col-md-6" id="BachTransfile1u">
+                          <label> Bachelor Transcript</label>
+                          <a href="{{studentpaper.picture.url}}" download>Download</a>
+                          <img class="form-control mb-3 mb-md-0" src="{{studentpaper.picture.url}}" alt='{{studentpaper.degreePaper}}' width="240" height="240">
+
+                          <div class="mb-3 mb-md-0">
+                            <label class="label5">
+                              Select File:
+                              <input class="input5" type="file" size="60" name="bachelorTranscriptu" id="bachelorTranscriptu" accept=".png,.jpeg,.pdf">
+                            </label>
+                          </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                      </div>
+
+
+                      <div class="row mb-3">
+                        {% for studentpaper in studentPaperlist %}
+                        {% if studentpaper.degreePaper|stringformat:"s" ==  'Master Diploma'|stringformat:"s" %}
+                        <div class="col-md-6" id="MastDipfile1u">
+                          <label> Master Diploma</label>
+                          <a href="{{studentpaper.picture.url}}" download>Download</a>
+                          <img class="form-control mb-3 mb-md-0" src="{{studentpaper.picture.url}}" alt='{{studentpaper.degreePaper}}' width="240" height="240">
+
+                          <div class="mb-3 mb-md-0">
+                            <label class="label5">
+                              Select File:
+                              <input class="input5" type="file" size="60" name="masterDiplomau" id="masterDiplomau" accept=".png,.jpeg,.pdf">
+                            </label>
+                          </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        {% for studentpaper in studentPaperlist %}
+                        {% if studentpaper.degreePaper|stringformat:"s" ==  'Master Transcript'|stringformat:"s" %}
+                        <div class="col-md-6" id="MastTransfile1u">
+                          <label> Master Transcript</label>
+                          <a href="{{studentpaper.picture.url}}" download>Download</a>
+                          <img class="form-control mb-3 mb-md-0" src="{{studentpaper.picture.url}}" alt='{{studentpaper.degreePaper}}' width="240" height="240">
+
+                          <div class="mb-3 mb-md-0">
+                            <label class="label5">
+                              Select File:
+                              <input class="input5" type="file" size="60" name="masterTranscriptu" id="masterTranscriptu" accept=".png,.jpeg,.pdf">
+                            </label>
+                          </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                      </div>
+
+
+                      <div class="row mb-3">
+                        {% for studentpaper in studentPaperlist %}
+                        {% if studentpaper.degreePaper|stringformat:"s" ==  'Recommendation Letter'|stringformat:"s" %}
+                        <div class="col-md-6" id="RecoLetfile1u">
+                          <label> Recommendation Letter</label>
+                          <a href="{{studentpaper.picture.url}}" download>Download</a>
+                          <img class="form-control mb-3 mb-md-0" src="{{studentpaper.picture.url}}" alt='{{studentpaper.degreePaper}}' width="240" height="240">
+
+                          <div class="mb-3 mb-md-0">
+                            <label class="label5">
+                              Select File:
+                              <input class="input5" type="file" size="60" name="recommendationLetteru" id="recommendationLetteru" accept=".png,.jpeg,.pdf">
+                            </label>
+                          </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        {% for studentpaper in studentPaperlist %}
+                        {% if studentpaper.degreePaper|stringformat:"s" ==  'C.V'|stringformat:"s" %}
+                        <div class="col-md-6" id="CVfile1u">
+                          <label> C.V</label>
+                          <a href="{{studentpaper.picture.url}}" download>Download</a>
+                          <img class="form-control mb-3 mb-md-0" src="{{studentpaper.picture.url}}" alt='{{studentpaper.degreePaper}}' width="240" height="240">
+
+                          <div class="mb-3 mb-md-0">
+                            <label class="label5">
+                              Select File:
+                              <input class="input5" type="file" size="60" name="CVimgeu" id="CVimgeu" accept=".png,.jpeg,.pdf">
+                            </label>
+                          </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                      </div>
+
+                    </div>
+
+
+                    <div id="filesInfo1">
+
+
+                      <div class="row mb-3" id="SchDipfile1" hidden>
+                        <div class="col-md-6">
+                          <label> School Diploma*</label>
+                          <div class="mb-3 mb-md-0">
+                            <label class="label5">
+                              Select File:
+                              <input class="input5" type="file" size="60" name="schoolDiploma" id="schoolDiploma" accept=".png,.jpeg,.pdf">
+                            </label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6" id="SchDipTransfile1" hidden>
+                          <label> School Diploma Transcript*</label>
+                          <div class="mb-3 mb-md-0">
+                            <label class="label5">
+                              Select File:
+                              <input class="input5" type="file" size="60" name="schoolDiplomaTranscript" id="schoolDiplomaTranscript" accept=".png,.jpeg,.pdf">
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row mb-3">
+                        <div class="col-md-6" id="BachDipfile1" hidden>
+                          <label>  Bachelor Diploma*</label>
+                          <div class="mb-3 mb-md-0">
+                            <label class="label5">
+                              Select File:
+                              <input class="input5" type="file" size="60" name="bachelorDiploma" id="bachelorDiploma" accept=".png,.jpeg,.pdf">
+                            </label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6" id="BachTransfile1" hidden>
+                          <label> Bachelor Transcript*</label>
+                          <div class="mb-3 mb-md-0">
+                            <label class="label5">
+                              Select File:
+                              <input class="input5" type="file" size="60" name="bachelorTranscript" id="bachelorTranscript" accept=".png,.jpeg,.pdf">
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+
+
+                      <div class="row mb-3" id="MastDipfile1" hidden>
+                        <div class="col-md-6">
+                          <label> Master Diploma*</label>
+                          <div class="mb-3 mb-md-0">
+                            <label class="label5">
+                              Select File:
+                              <input class="input5" type="file" size="60" name="masterDiploma" id="masterDiploma" accept=".png,.jpeg,.pdf">
+                            </label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6" id="MastTransfile1" hidden>
+                          <label> Master Transcript*</label>
+                          <div class="mb-3 mb-md-0">
+                            <label class="label5">
+                              Select File:
+                              <input class="input5" type="file" size="60" name="masterTranscript" id="masterTranscript" accept=".png,.jpeg,.pdf">
+                            </label>
+                          </div>
+                        </div>
+
+                      </div>
+
+
+                      <div class="row mb-3" id="RecoLetfile1" hidden>
+                        <div class="col-md-6">
+                          <label> Recommendation Letter*</label>
+                          <div class="mb-3 mb-md-0">
+                            <label class="label5">
+                              Select File:
+                              <input class="input5" type="file" size="60" name="recommendationLetter" id="recommendationLetter" accept=".png,.jpeg,.pdf">
+                            </label>
+                          </div>
+                        </div>
+
+                        <div class="col-md-6" id="CVfile1" hidden>
+                          <label> C.V*</label>
+                          <div class="mb-3 mb-md-0">
+                            <label class="label5">
+                              Select File:
+                              <input class="input5" type="file" size="60" name="CVimge" id="CVimge" accept=".png,.jpeg,.pdf">
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    {% for studentInfo in studentInfos %}
+                    {% if studentInfo.statusType|stringformat:"s" in 'Acceptance Letter Sent'|stringformat:"s" %}
+                    <div class="col-md-6" id="PaymentFile1">
+                      <label>Payment File :</label>
+                      <div class="mb-3 mb-md-0">
+                        <label class="label5">
+                          Select File:
+                          <input class="input5" type="file" size="60" name="PaymentFile" id="PaymentFile" accept=".png,.jpeg,.pdf" required>
+                        </label>
+                      </div>
+                    </div>
+                    {% endif %}
+                    {% endfor%}
+
+
+                    {% for documentPaperLists in documentPaperList %}
+                    <label> {{documentPaperLists.documentName}}</label>
+                    <a href="{{documentPaperLists.documentFile.url}}" download>Download</a>
+                    <img class="form-control mb-3 mb-md-0" src="{{documentPaperLists.documentFile.url}}" alt='{{documentPaperLists.documentName}}' width="240" height="240">
+
+                    <div class="mb-3 mb-md-0">
+                      <label class="label5">
+                        Select File:
+                        <input class="input5" type="file" size="60" name="documentPaperLists" id="documentPaperLists" accept=".png,.jpeg,.pdf">
+                      </label>
+                    </div>
+
+                    {% endfor %}
+
+
+                    <div class="mt-4 mb-0">
+                      <input class="btn btn-primary btn-block" id="btnAdd2" type="button" value="+Add Documents" onclick="AddFileBox('Files')" />
+                    </div>
+                    <div id="Files" name="F0">
+
+                    </div>
+
+                    <div class="row mb-3">
+                      <label id="labela10" name="labela10">University Program :  </label>
+                      <div class="col-ml-3">
+                        {% for seatsRegistration in seatsRegistrations %}
+                        <span style="border: 1px solid Black; padding: 1px; ">{{seatsRegistration.universityProgram}}</span>
+                        <br>
+                        {% endfor %}
+                      </div>
+                      <br>
+                      <div class="mt-4 mb-0">
+                        <input class="btn btn-primary btn-block" id="btnAdd1" type="button" value="+Add more" onclick="AddSelectBox('Departments')" />
+                      </div>
+
+                      <label style="display:none;"> Department5aa : </label>
+                      <select class="form-control mb-3 mb-md-0" name="department5aa" style="display:none;" readonly id="department5aa">
+                        {% for universityRegisterlists      in universityRegisterlist    %}
+                        <option data-foo="{{universityRegisterlists.universityName_id}}" value="{{universityRegisterlists.department}}">{{ universityRegisterlists.department}}</option>
+                        {% endfor %}
+                      </select>
+
+                      <div class="col-md-6">
+                        <div id="Departments" name="0">
+
+                          <!--Textboxes will be added here -->
+                          <div id="Departments1">
+                            {% for seatsRegistration in seatsRegistrationslist %}
+                            <div id="Departments2">
+                              <div class="row mb-3">
+                                <div>
+                                  <label> University Name : </label>
+                                  <select data-foo="{{ forloop.counter }}" class="form-control mb-3 mb-md-0" name="universityName" readonly id="universityNameA{{ forloop.counter }}" onchange="changDepartment12('{{ forloop.counter }}')">
+                                    {% for universitynames     in universityNameList    %}
+                                    {% if  universitynames.universityName|stringformat:"s" in  seatsRegistration.universityname|stringformat:"s" %}
+                                    <option selected="selected" data-foo="{{universitynames.id}}" value="{{universitynames.id}}">{{ universitynames.universityName}}</option>
+                                    {% else %}
+                                    <option data-foo="{{universitynames.id}}" value="{{universitynames.id}}">{{ universitynames.universityName}}</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                  </select>
+                                </div>
+
+                                <div>
+                                  <label> Department :</label>
+
+                                  <select class="form-control mb-3 mb-md-0" name="department" readonly id="departmentA{{ forloop.counter }}">
+                                    {% for universityRegisterlists      in universityRegisterlist    %}
+                                    {% if universityRegisterlists.id == seatsRegistration.universityprogramId  %}
+
+                                    <option selected="selected" data-foo="{{universityRegisterlists.universityName_id}}" value="{{universityRegisterlists.department}}">{{ universityRegisterlists.department}}</option>
+                                    {% else %}
+                                    <option data-foo="{{universityRegisterlists.universityName_id}}" value="{{universityRegisterlists.department}}">{{ universityRegisterlists.department}}</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                  </select>
+                                </div>
+                              </div>
+                              <input name="DynamicSelectBox" type="button" value="Remove" onclick="RemoveDIV2(this)" />
+                            </div>
+                            {% endfor %}
+                          </div>
+
+                        </div>
+                      </div>
+
+                    </div>
+
+
+                    <div class="mt-4 mb-0">
+                      <div class="d-grid">
+                        <input class="btn btn-primary btn-block" type="submit" value="Update">
+                        <input type="hidden" name="username" id="username" value="{{ username }}">
+                      </div>
+                    </div>
+
+                  </form>
+
+                   
+               
+                    <form method="POST" id="studentForm1" name="studentForm1" enctype="multipart/form-data" action="{% url  officepage  username  %}">                
+                      {% csrf_token%}
+                      <div class="mt-4 mb-0">
+                        <div class="d-grid">
+                          <input class="btn btn-primary btn-block" type="submit" value="Back">
+                          <input type="hidden" name="username" id="username" value="{{ username }}">
+                        </div>
+                      </div>
+                    </form>
+
+                </section>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+
+</div>
+
+
+<script type="text/javascript">
+
+
+  function changDepartment12(val) {
+
+
+      departmentTemp = 'departmentA' + val;
+      universityNameTemp = 'universityNameA' + val;
+
+
+    x22 = document.getElementById(departmentTemp);
+    while (x22.length > 0) {
+      x22.remove(0);
+    }
+
+    document.getElementById(departmentTemp).innerHTML = document.getElementById("department5aa").innerHTML;
+    document.getElementById(departmentTemp).removeAttribute("disabled");
+    x1 = document.getElementById(universityNameTemp);
+    x2 = document.getElementById(departmentTemp);
+
+    xo1 = document.getElementById(universityNameTemp).options;
+    var vals = xo1[xo1.selectedIndex].getAttribute('data-foo');
+
+    var ind = 0;
+
+    while (ind < x2.length + 1) {
+      xo2 = document.getElementById(departmentTemp).options;
+      valss = x2.options[ind].getAttribute('data-foo');
+
+      if (valss === vals) {
+        ind += 1;
+      }
+      else {
+        x2.remove(ind);
+      }
+    }
+
+  }
+
+  function changDepartment11(val) {
+
+    departmentTemp = 'department' + val;
+    universityNameTemp = 'universityName' + val;
+    document.getElementById(departmentTemp).removeAttribute("disabled");
+
+    x22 = document.getElementById(departmentTemp);
+    while (x22.length > 0) {
+      x22.remove(0);
+    }
+
+    document.getElementById(departmentTemp).innerHTML = document.getElementById("department5aa").innerHTML;
+
+    x1 = document.getElementById(universityNameTemp);
+    x2 = document.getElementById(departmentTemp);
+    xo1 = document.getElementById(universityNameTemp).options;
+    var vals = xo1[xo1.selectedIndex].getAttribute('data-foo');
+
+    var ind = 0;
+
+    while (ind < x2.length + 1) {
+      xo2 = document.getElementById(departmentTemp).options;
+      valss = x2.options[ind].getAttribute('data-foo');
+
+      if (valss === vals) {
+        ind += 1;
+      }
+      else {
+        x2.remove(ind);
+      }
+    }
+
+  }
+
+  function GetDynamicSelectBox(val) {
+    return '<label> universityName :' + val + ' </label>' +
+      '<select  class="form-control mb-3 mb-md-0"  id=universityName' + val + '  name=universityName   onchange="changDepartment11(' + val + ')"  > ' +
+
+      '  {% for universityNameLists in universityNameList %}  ' +
+       '    <option data-foo="{{universityNameLists.id}}" value="{{universityNameLists.id}}">{{ universityNameLists.universityName}}</option>  ' +
+       '{% endfor %}  ' +
+      '</select >' +
+
+      '<label> department :' + val + '</label>' +
+      ' <select class="form-control mb-3 mb-md-0"  disabled  id=department' + val + ' name=department>' +
+      '  {% for universityRegisterlists in universityRegisterlist %}  ' +
+      '  <option data-foo="{{universityRegisterlists.universityName_id}}"  value="{{universityRegisterlists.department}}">{{ universityRegisterlists.department }}</option>  ' +
+      '{% endfor %}  ' +
+      '  </select>' +
+      '<input name = "DynamicSelectBox" type="button" value="Remove"  onclick="RemoveSelectBox(this)" />';
+  }
+
+
+  function GetDynamicSelectBoxF(val) {
+    return    '<label>Document name :' + val + '</label>' +
+      ' <input class="form-control mb-3 mb-md-0"   type="text" size="60"   id=filePaperName' + val + ' name=filePaperName  required>' +
+      ' <input class="form-control mb-3 mb-md-0"   type="file" size="60"   id=filePaper' + val + ' name=filePaper accept=".png,.jpeg,.pdf" required>' +
+
+      '<input name = "DynamicSelectBox" type="button" value="Remove"  onclick="RemoveSelectBoxF(this)" />';
+  }
+
+
+
+
+  function AddFileBox(files) {
+    var div = document.createElement('DIV');
+    div.id = 1;
+
+    elmentId = document.getElementById('Files').lastElementChild;
+
+    if (elmentId != null) {
+
+      if (elmentId.id != 'Files') {
+
+        ids = parseInt(elmentId.id) + 1;
+        div.id = ids;
+      } else {
+        elmentId.id = div.id;
+      }
+    }
+
+    div.innerHTML += GetDynamicSelectBoxF(div.id);
+
+    document.getElementById('Files').appendChild(div);
+
+    var div2 = document.getElementById('Files');
+    var div2Paras = div2.getElementsByTagName('input');
+    var num = div2Paras.length;
+    document.getElementById('Files').setAttribute('name', 'F'+num);
+  }
+
+    function AddSelectBox(val) {
+
+      var div = document.createElement('DIV');
+      div.id = 1;
+
+      elmentId = document.getElementById('Departments').lastElementChild;
+      document.getElementById('Departments').setAttribute('name', '0');
+
+
+      if (elmentId != null) {
+
+        if (elmentId.id != 'Departments1') {
+
+          ids = parseInt(elmentId.id) + 1;
+          div.id = ids;
+        } else {
+          elmentId.id = div.id;
+        }
+      }
+
+
+
+      div.innerHTML += GetDynamicSelectBox(div.id);
+      document.getElementById('Departments').appendChild(div);
+
+      var div2 = document.getElementById('Departments');
+      var div2Paras = div2.getElementsByTagName('input');
+      var num = div2Paras.length  ;
+      document.getElementById('Departments').setAttribute('name',  num);
+    }
+    function RemoveSelectBox(div) {
+      document.getElementById('Departments').removeChild(div.parentNode);
+      elmentId = document.getElementById('Departments').lastElementChild;
+      document.getElementById('Departments').setAttribute('name', '0');
+
+      var div2 = document.getElementById('Departments');
+      var div2Paras = div2.getElementsByTagName('input');
+      var num = div2Paras.length;
+      document.getElementById('SchoolDiploma').setAttribute('name', num);
+
+    }
+
+  function RemoveSelectBoxF(div) {
+    document.getElementById('Files').removeChild(div.parentNode);
+
+
+  }
+
+  function RemoveDIV(div) {
+
+    var div2 = document.getElementById('Files');
+    var div2Paras = div2.getElementsByTagName('input');
+    var num = div2Paras.length;
+    if (num > 1) {
+      document.getElementById('Files').removeChild(div.parentNode);
+      elmentId = document.getElementById('Files').lastElementChild;
+      document.getElementById('SchoolDiploma').setAttribute('name', num - 1);
+
+    }
+  }
+
+
+  function RemoveDIV2(div) {
+
+    var div2 = document.getElementById('Departments1');
+    var div2Paras = div2.getElementsByTagName('input');
+    var num = div2Paras.length;
+    if (num > 1) {
+      document.getElementById('Departments1').removeChild(div.parentNode);
+      elmentId = document.getElementById('Departments1').lastElementChild;
+      document.getElementById('SchoolDiploma').setAttribute('name', num-1);
+
+    }
+  }
+
+  function ClearList(val) {
+    elme = document.getElementById(val).lastElementChild;
+    num = parseInt(elme.id)
+    for (i = 0; i < num; i++) {
+      const elme = document.getElementById(val);
+      elme.removeChild(elme.firstElementChild);
+
+    }
+
+  }
+
+  function SelectFile(val) {
+    var x = val.options[val.selectedIndex].text;
+    deg = document.getElementById('studentdegreeTemp').value;
+
+
+    document.getElementById('SchDipfile1').setAttribute("hidden", true);
+    document.getElementById('SchDipTransfile1').setAttribute("hidden", true);
+    document.getElementById('BachDipfile1').setAttribute("hidden", true);
+    document.getElementById('BachTransfile1').setAttribute("hidden", true);
+
+
+    document.getElementById('MastDipfile1').setAttribute("hidden", true);
+    document.getElementById('MastTransfile1').setAttribute("hidden", true);
+    document.getElementById('RecoLetfile1').setAttribute("hidden", true);
+    document.getElementById('CVfile1').setAttribute("hidden", true);
+
+
+    document.getElementById('schoolDiploma').required = false;
+    document.getElementById('schoolDiplomaTranscript').required = false;
+
+    document.getElementById('bachelorDiploma').required = false;
+    document.getElementById('bachelorTranscript').required = false;
+
+    document.getElementById('masterDiploma').required = false;
+    document.getElementById('masterTranscript').required = false;
+
+    document.getElementById('recommendationLetter').required = false;
+    document.getElementById('CVimge').required = false;
+
+
+
+    if (x == 'PhD') {
+
+
+      if ((deg == 'Diploma') || (deg == 'Bachelor') || (deg == 'Prep') ) {
+        document.getElementById('BachDipfile1').removeAttribute("hidden");
+        document.getElementById('MastDipfile1').removeAttribute("hidden");
+        document.getElementById('MastTransfile1').removeAttribute("hidden");
+        document.getElementById('RecoLetfile1').removeAttribute("hidden");
+        document.getElementById('CVfile1').removeAttribute("hidden");
+
+        document.getElementById('bachelorDiploma').required = true;
+        document.getElementById('masterDiploma').required = true;
+        document.getElementById('masterTranscript').required = true;
+        document.getElementById('recommendationLetter').required = true;
+        document.getElementById('CVimge').required = true;
+      }
+      if (deg == 'Master') {
+        document.getElementById('MastDipfile1').removeAttribute("hidden");
+        document.getElementById('MastTransfile1').removeAttribute("hidden");
+        document.getElementById('masterDiploma').required = true;
+        document.getElementById('masterTranscript').required = true;
+      }
+
+      document.getElementById('schoolDiploma').required = false;
+      document.getElementById('schoolDiplomaTranscript').required = false;
+
+      document.getElementById('bachelorTranscript').required = false;
+
+
+
+
+    }
+
+
+    if (x == 'Master') {
+
+
+      if (deg == 'PhD') {
+        document.getElementById('BachTransfile1').removeAttribute("hidden");
+        document.getElementById('bachelorTranscript').required = true;
+      }
+      if ((deg == 'Diploma') || (deg == 'Bachelor') || (deg == 'Prep')  ) {
+        document.getElementById('BachDipfile1').removeAttribute("hidden");
+        document.getElementById('BachTransfile1').removeAttribute("hidden");
+        document.getElementById('RecoLetfile1').removeAttribute("hidden");
+        document.getElementById('CVfile1').removeAttribute("hidden");
+
+        document.getElementById('bachelorDiploma').required = true;
+        document.getElementById('bachelorTranscript').required = true;
+
+        document.getElementById('recommendationLetter').required = true;
+        document.getElementById('CVimge').required = true;
+      }
+
+
+
+
+      document.getElementById('schoolDiploma').required = false;
+      document.getElementById('schoolDiplomaTranscript').required = false;
+      document.getElementById('masterDiploma').required = false;
+      document.getElementById('masterTranscript').required = false;
+
+    }
+
+    if ((x == 'Diploma') || (x == 'Bachelor')  || (x == 'Prep') ) {
+
+      if ((deg == 'Master') || (deg == 'PhD')) {
+        document.getElementById('SchDipfile1').removeAttribute("hidden");
+        document.getElementById('SchDipTransfile1').removeAttribute("hidden");
+        document.getElementById('schoolDiploma').required = true;
+        document.getElementById('schoolDiplomaTranscript').required = true;
+      }
+
+      document.getElementById('bachelorDiploma').required = false;
+      document.getElementById('bachelorTranscript').required = false;
+
+      document.getElementById('masterDiploma').required = false;
+      document.getElementById('masterTranscript').required = false;
+
+      document.getElementById('recommendationLetter').required = false;
+      document.getElementById('CVimge').required = false;
+    }
+
+
+   }
+
+
+</script>
+
+  {% endblock %}
